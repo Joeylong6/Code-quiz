@@ -56,7 +56,7 @@ quizStartButton.addEventListener("click", quizQuestion);
 function quizQuestion() {
 
 // emptying the text in the div element
-    questionsQuizDivElement.innerHTML = "";
+   containerOfQuizElements.innerHTML = "";
 
 
 // creating an H1 element for my Title  
@@ -68,25 +68,14 @@ containerOfQuizElements.appendChild(h1ElementForQuizTitle);
 // creating HTML button element for my choices
 for(var i = 0; i <userQuizChoices.length; i++){
 var choicesButton = document.createElement("button");
-choicesButton.classList.add("options")
-choicesButton.setAttribute( "id", "choicesButton");
+
+choicesButton.setAttribute("id","choicesButton");
 choicesButton.setAttribute("type", "button");
-console.log(userQuizChoices);
 choicesButton.textContent = userQuizChoices[i];
 containerOfQuizElements.append(choicesButton)
-//starting the timer for the quiz
+
 
 }
-
-document.querySelectorAll('.options').forEach(item => {
-    item.addEventListener('click', event => {
-     
-    var userClicked = item.innerHTML;
-
-    compareChoicesWithAnswers(userClicked)
-
-    })
-  })
 
 //starting the timer for the quiz
 var interval = setInterval(function(){
@@ -103,39 +92,39 @@ var interval = setInterval(function(){
 
   myCounter++
 }
+
+    // adding a click event to the choices button 
+    document.querySelectorAll("choicesButton").forEach(item => {
+    item.addEventListener('click', event => {
     
+    containerOfQuizElements.innerHTML = "";
+    var userClicked = item.innerHTML;
 
-
-
-
-
-
-
-function getNextQuizQuestion(){
-
- if(myCounter<=questions.length) {
+    //  checking how many questions are left in the quiz
+    if(myCounter<=questions.length) {
     
-    quizQuestion ()
-    compareChoicesWithAnswers()
-}
-else {
+     quizQuestion ()
 
-    endOfTheQuiz()
-};
-};
+    compareChoicesWithAnswers(userClicked)
+    }
+        else {
+        
+         endOfTheQuiz()
+    };
 
+    });
 
 
 function compareChoicesWithAnswers(userClicked) {
 
   
-    
     // var usersAnswerToQuizQuestion = userClicked;
 
     if (userClicked == questions[myCounter].answer) {
 
         quizQuestion()
 
+        // creating a div element to hold the right or wrong answer from the program
         var createHrElement= document.createElement("hr");
         createHrElement.setAtrribute("width", "300px")
         containerOfQuizElements.append(createHrElement)
@@ -158,62 +147,49 @@ function compareChoicesWithAnswers(userClicked) {
         createDivElementToCommunicateWithUser.textContent = "Wrong !";
        containerOfQuizElements.append(createDivElementToCommunicateWithUser);
 
+       // taking 15 seconds off the clock as penalty for answering wrongly
         totalSecondsToCompleteQuiz = totalSecondsToCompleteQuiz - penalty;
-
-  
-        
     };
  
-    };
-
 
     function endOfTheQuiz() {
+
         containerOfQuizElements.innerHTML = "";
         
-      
-    
+      // creating a h1 element of All done! 
         var creatingH1Element = document.createElement("h1");
         creatingH1Element.setAttribute("id", "creatingH1Element");
-        creatingH1Element.textContent = "All done!"
+        creatingH1Element.innerHTML = "All done!"
     
-        questionsQuizDivElement.appendChild(creatingH1Element);
+        questionsQuizDivElement.append(creatingH1Element);
     
-        // Paragraph
-        var creatingPElement = document.createElement("p");
-        creatingPElement.setAttribute("id", "creatingPElement");
-    
-        questionsQuizDivElement.appendChild(creatingPElement);
-    
-        // Calculates time remaining and replaces it with score
+       
+        // Calculates time remaining and renders it to the screen as the score
         if (totalSecondsToCompleteQuiz >= 0) {
             var timeRemaining = totalSecondsToCompleteQuiz;
-            creatingP2Element = document.createElement("p");
+            creatingPElement = document.createElement("p");
             clearInterval(timerDisplay);
             creatingPElement.textContent = "Your final score is " + timeRemaining;
     
-            containerOfQuizElements.appendChild(creatingP2Element);
+            containerOfQuizElements.append(creatingP2Element);
         }
     
+        
+        
         // Creating a label element which will have an input field of text
-        
-        var creatingFormElement=document.createElement("form");
-        creatingFormElement=setAttribute("method","post");
-        creatingFormElement("action,","submit.php");
-        
-        
-        // var creatingLabelElement = document.createElement("label");
-        // creatingLabelElement.setAttribute("id", "creatingLabelElement");
-        // creatingLabelElement.textContent.toUpperCase = "Enter initials:";
+        var creatingLabelElement = document.createElement("label");
+        creatingLabelElement.setAttribute("id", "creatingLabelElement");
+        creatingLabelElement.textContent.toUpperCase = "Enter initials:";
     
-        // containerOfQuizElements.appendChild(creatingLabelElement);
+        containerOfQuizElements.append(creatingLabelElement);
     
-    
+        //creating the input element of the label to receive the initials of user
         var creatingInputElement = document.createElement("input");
         creatingInputElement.setAttribute("type", "text");
         creatingInputElement.setAttribute("id", "initials");
         
     
-        containerOfQuizElements.appendChild(creatingInputElement);
+        containerOfQuizElements.append(creatingInputElement);
     
         // creating a submission button 
         var creatingSubmitButton = document.createElement("button");
@@ -222,39 +198,44 @@ function compareChoicesWithAnswers(userClicked) {
         creatingSubmitButton.setAttribute("id", "Submit");
         creatingSubmitButton.textContent = "Submit";
     
-        containerOfQuizElements.appendChild(creatingSubmitButton);
+        containerOfQuizElements.append(creatingSubmitButton);
     
         // Event listener to capture initials and local storage for initials and score
         creatingSubmitButton.addEventListener("click", printHighscores)
+        localStorage.setItem("userFinalScore",JSON.stringify(userFinalScore)); 
     }
         
         
-        // function to render the final score to the browser
+        // function to render the final score to the browser and hold the highscores
         
         function printHighscores () {
-
+        
+      // clearing all text on page 
         questionsQuizDivElement.innerHTML="";
         containerOfQuizElements.innerHTML="";
         highScoresElement.innerHTML="";
         timerDisplay.innerHTML="";
 
+        // creating the h1 element of High Scores
         var highScoresH1Title= document.createElement("h1");
         highScoresH1Title.setAttribute("id","highScoresTitle");
         highScoresH1Title.innerHTML="Highscores";
         containerOfQuizElements.appendChild(highScoresH1Title);
 
+        // rendering the users initials and final time score to the screen
         var paraToRenderUserFinalScore=document.createElement("p");
         paraToRenderUserFinalScore.setAttribute("id", "paraToRenderUserFinalScore");
         questionsQuizDivElement.appendChild(paraToRenderUserFinalScore);
         paraToRenderUserFinalScore.textContent= UserFinalScore;
 
-
+        // creating a go back button
         var creatingGoBackButton = document.createElement("button");
         creatingGoBackButton.setAttribute("type","button");
         creatingGoBackButton.setAttribute("id","goBackbutton");
         creatingGoBackButton.textContent = "Go Back";
         containerOfQuizElements.append(creatingGoBackButton);
 
+        // taking the user back to the initial page 
         creatingGoBackButton.addEventListener("click", function () {
             window.location.replace("./index.html");
         });
@@ -264,19 +245,19 @@ function compareChoicesWithAnswers(userClicked) {
         creatingClearHighScoresButton.setAttribute("id", "clearHighScoresButton");
         creatingClearHighScoresButton.textContent = "Clear Highscores";
         containerOfQuizElements.append(creatingClearHighScoresButton);
-        creatingGoBackButton.addEventListener("click", function () {
+        creatingClearHighScoresButton.addEventListener("click", function () {
             localStorage.clear();
         });
 
 
-// will 
+        // will get the user
         var userInitials = event.target.value;
             
         var userFinalScore = {
                 initials: userInitials,
                 score: timeRemaining,
             }
-            localStorage.setItem("userFinalScore",JSON.stringify(userFinalScore)); 
+          
             localStorage.getItem( "userFinalScore",JSON.parse(userFinalScore));
             document.write
             
@@ -284,8 +265,3 @@ function compareChoicesWithAnswers(userClicked) {
             
             
         };
-
-
-
-            
-        
