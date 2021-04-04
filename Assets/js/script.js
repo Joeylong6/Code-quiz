@@ -61,7 +61,7 @@ function quizQuestion() {
 
 // creating an H1 element for my Title  
 var h1ElementForQuizTitle = document.createElement("h1");
-h1ElementForQuizTitle.setAttribute("id", "h1ElementForQuiztitle");
+h1ElementForQuizTitle.setAttribute("id", "h1ElementForQuizTitle");
 h1ElementForQuizTitle.textContent = quizH1Question;
 containerOfQuizElements.appendChild(h1ElementForQuizTitle);
        
@@ -72,8 +72,10 @@ var choicesButton = document.createElement("button");
 choicesButton.setAttribute("id","choicesButton");
 choicesButton.setAttribute("type", "button");
 choicesButton.textContent = userQuizChoices[i];
-containerOfQuizElements.append(choicesButton)
+containerOfQuizElements.appendChild(choicesButton)
 
+}
+myCounter++
 
 }
 
@@ -90,11 +92,11 @@ var interval = setInterval(function(){
     }
   }, 1000);
 
-  myCounter++
-}
+  
+
 
     // adding a click event to the choices button 
-    document.querySelectorAll("choicesButton").forEach(item => {
+    document.querySelectorAll("#choicesButton").forEach(item => {
     item.addEventListener('click', event => {
     
     containerOfQuizElements.innerHTML = "";
@@ -105,14 +107,14 @@ var interval = setInterval(function(){
     
      quizQuestion ()
 
-    compareChoicesWithAnswers(userClicked)
+    compareChoicesWithAnswers()
     }
         else {
         
          endOfTheQuiz()
     };
+});
 
-    });
 
 
 function compareChoicesWithAnswers(userClicked) {
@@ -124,14 +126,14 @@ function compareChoicesWithAnswers(userClicked) {
 
         quizQuestion()
 
-        // creating a div element to hold the right or wrong answer from the program
+        // creating a Horizontal line and  div element to hold the right or wrong answer from the program
         var createHrElement= document.createElement("hr");
         createHrElement.setAtrribute("width", "300px")
-        containerOfQuizElements.append(createHrElement)
+        containerOfQuizElements.appendChild(createHrElement)
         var createDivElementToCommunicateWithUser = document.createElement("div");
         createDivElementToCommunicateWithUser.setAttribute("id", "correctOrWrong");
         createDivElementToCommunicateWithUser.textContent = "Correct !";
-        containerOfQuizElements.append(createDivElementToCommunicateWithUser);
+        containerOfQuizElements.appendChild(createDivElementToCommunicateWithUser);
        
         
     }
@@ -141,15 +143,16 @@ function compareChoicesWithAnswers(userClicked) {
 
         var createHrElement= document.createElement("hr");
         createHrElement.setAtrribute("width", "300px")
-        containerOfQuizElements.append(createHrElement)
+        containerOfQuizElements.appendChild(createHrElement)
         var createDivElementToCommunicateWithUser = document.createElement("div");
         createDivElementToCommunicateWithUser.setAttribute("id", "correctOrWrong");
         createDivElementToCommunicateWithUser.textContent = "Wrong !";
-       containerOfQuizElements.append(createDivElementToCommunicateWithUser);
+       containerOfQuizElements.appendChild(createDivElementToCommunicateWithUser);
 
        // taking 15 seconds off the clock as penalty for answering wrongly
         totalSecondsToCompleteQuiz = totalSecondsToCompleteQuiz - penalty;
     };
+};
  
 
     function endOfTheQuiz() {
@@ -158,10 +161,10 @@ function compareChoicesWithAnswers(userClicked) {
         
       // creating a h1 element of All done! 
         var creatingH1Element = document.createElement("h1");
-        creatingH1Element.setAttribute("id", "creatingH1Element");
+        creatingH1Element.setAttribute("id","creatingH1Element");
         creatingH1Element.innerHTML = "All done!"
     
-        questionsQuizDivElement.append(creatingH1Element);
+        questionsQuizDivElement.appendChild(creatingH1Element);
     
        
         // Calculates time remaining and renders it to the screen as the score
@@ -171,25 +174,24 @@ function compareChoicesWithAnswers(userClicked) {
             clearInterval(timerDisplay);
             creatingPElement.textContent = "Your final score is " + timeRemaining;
     
-            containerOfQuizElements.append(creatingP2Element);
+            containerOfQuizElements.appendChild(creatingP2Element);
         }
     
-        
         
         // Creating a label element which will have an input field of text
         var creatingLabelElement = document.createElement("label");
         creatingLabelElement.setAttribute("id", "creatingLabelElement");
         creatingLabelElement.textContent.toUpperCase = "Enter initials:";
     
-        containerOfQuizElements.append(creatingLabelElement);
+        containerOfQuizElements.appendChild(creatingLabelElement);
     
         //creating the input element of the label to receive the initials of user
         var creatingInputElement = document.createElement("input");
         creatingInputElement.setAttribute("type", "text");
         creatingInputElement.setAttribute("id", "initials");
-        
+        creatingInputElement.textcontent = "";
     
-        containerOfQuizElements.append(creatingInputElement);
+        containerOfQuizElements.appendChild(creatingInputElement);
     
         // creating a submission button 
         var creatingSubmitButton = document.createElement("button");
@@ -198,17 +200,17 @@ function compareChoicesWithAnswers(userClicked) {
         creatingSubmitButton.setAttribute("id", "Submit");
         creatingSubmitButton.textContent = "Submit";
     
-        containerOfQuizElements.append(creatingSubmitButton);
+        containerOfQuizElements.appendChild(creatingSubmitButton);
     
-        // Event listener to capture initials and local storage for initials and score
-        creatingSubmitButton.addEventListener("click", printHighscores)
+        // Event listener to capture initials and put them in local storage for initials and score
+        creatingSubmitButton.addEventListener("click", printHighScoresPage)
         localStorage.setItem("userFinalScore",JSON.stringify(userFinalScore)); 
     }
         
         
         // function to render the final score to the browser and hold the highscores
         
-        function printHighscores () {
+        function printHighScoresPage () {
         
       // clearing all text on page 
         questionsQuizDivElement.innerHTML="";
@@ -220,48 +222,56 @@ function compareChoicesWithAnswers(userClicked) {
         var highScoresH1Title= document.createElement("h1");
         highScoresH1Title.setAttribute("id","highScoresTitle");
         highScoresH1Title.innerHTML="Highscores";
+
         containerOfQuizElements.appendChild(highScoresH1Title);
 
         // rendering the users initials and final time score to the screen
         var paraToRenderUserFinalScore=document.createElement("p");
         paraToRenderUserFinalScore.setAttribute("id", "paraToRenderUserFinalScore");
         questionsQuizDivElement.appendChild(paraToRenderUserFinalScore);
-        paraToRenderUserFinalScore.textContent= UserFinalScore;
+        paraToRenderUserFinalScore.textContent= printUserDetailsOnHighScoresPage;
+
+        containerOfQuizElements.appendChild(paraToRenderUserFinalScore)
 
         // creating a go back button
         var creatingGoBackButton = document.createElement("button");
         creatingGoBackButton.setAttribute("type","button");
-        creatingGoBackButton.setAttribute("id","goBackbutton");
+        creatingGoBackButton.setAttribute("id","goBackButton");
         creatingGoBackButton.textContent = "Go Back";
-        containerOfQuizElements.append(creatingGoBackButton);
+
+        containerOfQuizElements.appendChild(creatingGoBackButton);
 
         // taking the user back to the initial page 
         creatingGoBackButton.addEventListener("click", function () {
             window.location.replace("./index.html");
         });
         
+        // creating a clear highscores button
         var creatingClearHighScoresButton = document.createElement("button");
         creatingClearHighScoresButton.setAttribute("type", "button");
         creatingClearHighScoresButton.setAttribute("id", "clearHighScoresButton");
         creatingClearHighScoresButton.textContent = "Clear Highscores";
-        containerOfQuizElements.append(creatingClearHighScoresButton);
+
+        containerOfQuizElements.appendChild(creatingClearHighScoresButton);
+
         creatingClearHighScoresButton.addEventListener("click", function () {
             localStorage.clear();
         });
+    }
+
+        // will get the user details printed on the HighScores page
+        function printUserDetailsOnHighScoresPage () {
+            var userInitials = event.target.value;
+            
+            var userFinalScore = {
+                    initials: userInitials,
+                    score: timeRemaining,
+                }
+              
+                localStorage.getItem("userFinalScore",JSON.parse(userFinalScore));
+                return (userFinalScore)
 
 
-        // will get the user
-        var userInitials = event.target.value;
-            
-        var userFinalScore = {
-                initials: userInitials,
-                score: timeRemaining,
-            }
-          
-            localStorage.getItem( "userFinalScore",JSON.parse(userFinalScore));
-            document.write
-            
-            
-            
-            
-        };
+        }
+
+    };

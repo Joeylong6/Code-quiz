@@ -1,9 +1,6 @@
-
-
 :root {
-    --buttonBackgroundColour: rgb(51, 10, 51);
+  --buttonBackgroundColour: rgb(51, 10, 51);
 }
-  
 
 html {
   margin: 50px;
@@ -13,16 +10,14 @@ body {
   background-color: white;
   margin: 20px;
 }
-#highScores {
-display: inline-block;
 
-text-decoration: none;
+#highScores {
+  display: inline-block;
+  text-decoration: none;
 }
 
 #timerDisplay {
-
-float: right;
-
+  float: right;
 }
 
 #questionsQuizDivElement {
@@ -55,32 +50,28 @@ float: right;
 }
 
 #choicesButton {
-  background-color:var(--buttonBackgroundColour);
+  background-color: var(--buttonBackgroundColour);
   cursor: pointer;
-  border: 1px solid black; 
-  color: white; 
-  padding: 10px 24px; 
-  cursor: hand; 
-  width: 40%; 
-  display: block; 
+  border: 1px solid black;
+  color: white;
+  padding: 10px 24px;
+  cursor: hand;
+  width: 40%;
+  display: block;
   text-align: left;
 }
-
 
 /* Add a background color on hover */
 #choicesButton button:hover {
   background-color: rgb(129, 11, 129);
 }
 
-
 #h1ElementForQuiztitle {
-
   font-weight: bold;
-
 }
 
 #clearHighScoresButton {
-  background-color:var(--buttonBackgroundColour);
+  background-color: var(--buttonBackgroundColour);
   cursor: hand;
   position: relative;
   padding: 10px;
@@ -89,9 +80,8 @@ float: right;
   text-align: center;
 }
 
-
 #Submit {
-  background-color:var(--buttonBackgroundColour);
+  background-color: var(--buttonBackgroundColour);
   cursor: pointer;
   margin-left: 33%;
   padding: 15px 32px;
@@ -100,8 +90,7 @@ float: right;
 }
 
 #goBackbutton {
-
-  background-color:var(--buttonBackgroundColour);
+  background-color: var(--buttonBackgroundColour);
   cursor: pointer;
   padding: 10px;
   color: white;
