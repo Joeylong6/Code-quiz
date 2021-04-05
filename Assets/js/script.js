@@ -2,7 +2,7 @@ var questions = [
   {
     title: "Commonly used data types DO NOT include:",
     choices: ["1.strings", "2.booleans", "3.alerts", "4.numbers"],
-    answer: "alerts",
+    answer: "3.alerts",
   },
   {
     title: "The condition in an if / else statement is enclosed within ____.",
@@ -12,7 +12,7 @@ var questions = [
       "3.parentheses",
       "4.square brackets",
     ],
-    answer: "parentheses",
+    answer: "3.parentheses",
   },
   {
     title: "Arrays in Javascript can be used to store ____.",
@@ -47,10 +47,8 @@ var questions = [
 var UserFinalScore = 0;
 var totalSecondsToCompleteQuiz = 75;
 var timePenalty = 15;
-var myCounter = 0;
+var myCounter = -1;
 var myCounterChoices = 0;
-var quizH1Question = questions[myCounter].title;
-var userQuizChoices = questions[myCounter].choices;
 
 // using queryselector to assign elements to variables
 var highScoresElement = document.getElementById("highScores");
@@ -67,6 +65,9 @@ quizStartButton.addEventListener("click", quizQuestion);
 
 // function to render the quiz question to screen
 function quizQuestion() {
+  myCounter++;
+  var quizH1Question = questions[myCounter].title;
+  var userQuizChoices = questions[myCounter].choices;
   // emptying the text in the div element
   containerOfQuizElements.innerHTML = "";
 
@@ -86,8 +87,6 @@ function quizQuestion() {
 
     containerOfQuizElements.appendChild(choicesButton);
   }
-
-  myCounter++;
 }
 
 //starting the timer for the quiz
@@ -104,29 +103,48 @@ var interval = setInterval(function () {
   }
 }, 1000);
 
-// adding a click event to the choices button
-document.querySelectorAll("#choicesButton").forEach((item) => {
-  item.addEventListener("click", (event) => {
+// // adding a click event to the choices button
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.id == "choicesButton") {
     containerOfQuizElements.innerHTML = "";
-    var userClicked = item.innerHTML;
+    var userClicked = e.target.innerText;
+    console.log(userClicked);
     //  checking how many questions are left in the quiz
     if (myCounter <= questions.length) {
+      compareChoicesWithAnswers(userClicked);
       quizQuestion();
-      compareChoicesWithAnswers();
     } else {
       endOfTheQuiz();
     }
-  });
+
+    //do something
+  }
 });
+
+// document.querySelectorAll("#choicesButton").forEach((item) => {
+//   console.log("item");
+//   item.addEventListener("click", (event) => {
+//     containerOfQuizElements.innerHTML = "";
+//     var userClicked = item.innerHTML;
+//     //  checking how many questions are left in the quiz
+//     if (myCounter <= questions.length) {
+//       quizQuestion();
+//       compareChoicesWithAnswers();
+//     } else {
+//       endOfTheQuiz();
+//     }
+//   });
+// });
 
 function compareChoicesWithAnswers(userClicked) {
   // var usersAnswerToQuizQuestion = userClicked;
   if (userClicked == questions[myCounter].answer) {
+    console.log("correct");
     quizQuestion();
 
     // creating a Horizontal line and  div element to hold the right or wrong answer from the program
     var createHrElement = document.createElement("hr");
-    createHrElement.setAtrribute("width", "300px");
+    createHrElement.setAttribute("width", "300px");
     containerOfQuizElements.appendChild(createHrElement);
     var createDivElementToCommunicateWithUser = document.createElement("div");
     createDivElementToCommunicateWithUser.setAttribute("id", "correctOrWrong");
@@ -134,10 +152,11 @@ function compareChoicesWithAnswers(userClicked) {
 
     containerOfQuizElements.appendChild(createDivElementToCommunicateWithUser);
   } else {
+    console.log("incorrect");
     quizQuestion();
 
     var createHrElement = document.createElement("hr");
-    createHrElement.setAtrribute("width", "300px");
+    createHrElement.setAttribute("width", "300px");
     containerOfQuizElements.appendChild(createHrElement);
     var createDivElementToCommunicateWithUser = document.createElement("div");
     createDivElementToCommunicateWithUser.setAttribute("id", "correctOrWrong");
@@ -146,7 +165,7 @@ function compareChoicesWithAnswers(userClicked) {
     containerOfQuizElements.appendChild(createDivElementToCommunicateWithUser);
 
     // taking 15 seconds off the clock as penalty for answering wrongly
-    totalSecondsToCompleteQuiz = totalSecondsToCompleteQuiz - penalty;
+    totalSecondsToCompleteQuiz = totalSecondsToCompleteQuiz - timePenalty;
   }
 }
 
