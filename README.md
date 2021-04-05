@@ -14,7 +14,8 @@ I tried to dynamically bring in the highScores page which was a mistake. I got o
 
 ## Screen Shot of Final Work:
 
-![](Assets/images/Screenshot 2021-04-05 15.54.26 (1).png)
+![](Assets/images/CodeQuiz.png)
+
 
 
 ## Link to deployed webpage
