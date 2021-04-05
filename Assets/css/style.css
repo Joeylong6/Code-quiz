@@ -11,12 +11,12 @@ body {
   margin: 20px;
 }
 
-#highScores {
+a {
   display: inline-block;
   text-decoration: none;
 }
 
-#timerDisplay {
+.timer {
   float: right;
 }
 
@@ -36,10 +36,6 @@ body {
   width: 500px;
   height: 500px;
   text-align: left;
-}
-
-#timerDisplay {
-  float: right;
 }
 
 #quizStartButton {
@@ -66,7 +62,7 @@ body {
   background-color: rgb(129, 11, 129);
 }
 
-#h1ElementForQuiztitle {
+#h1ElementForQuizTitle {
   font-weight: bold;
 }
 
@@ -89,7 +85,7 @@ body {
   text-align: center;
 }
 
-#goBackbutton {
+#goBackButton {
   background-color: var(--buttonBackgroundColour);
   cursor: pointer;
   padding: 10px;
