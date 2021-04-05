@@ -43,6 +43,7 @@ a {
   cursor: pointer;
   background-color: var(--buttonBackgroundColour);
   color: white;
+  padding: 10px;
 }
 
 #choicesButton {

@@ -22,13 +22,13 @@ var questions = [
       "3.booleans",
       "4.all of the above",
     ],
-    answer: "all of the above",
+    answer: "4.all of the above",
   },
   {
     title:
       "String values must be enclosed within ____ when being assigned to variables.",
     choices: ["1.commas", "2.curly brackets", "3.quotes", "4.parenthesis"],
-    answer: "quotes",
+    answer: "3.quotes",
   },
   {
     title:
@@ -39,18 +39,18 @@ var questions = [
       "3.for loops",
       "4.console log",
     ],
-    answer: "console log",
+    answer: "4.console log",
   },
 ];
 
-// Declaring variables
+// Declaring the variables
 var UserFinalScore = 0;
 var totalSecondsToCompleteQuiz = 75;
 var timePenalty = 15;
 var myCounter = -1;
 var myCounterChoices = 0;
 
-// using queryselector to assign elements to variables
+// using getElementById to assign html elements to variables
 var highScoresElement = document.getElementById("highScores");
 var timerDisplay = document.getElementById("timerDisplay");
 var quizStartButton = document.getElementById("quizStartButton");
@@ -61,11 +61,35 @@ var containerOfQuizElements = document.getElementById(
   "containerOfQuizElements"
 );
 
-quizStartButton.addEventListener("click", quizQuestion);
+quizStartButton.addEventListener("click", startTimer);
 
-// function to render the quiz question to screen
-function quizQuestion() {
+// function to start the timer and invoke funciton to render first question to screen
+function startTimer() {
+  var interval = setInterval(function () {
+    document.getElementById(
+      "timerDisplay"
+    ).innerHTML = totalSecondsToCompleteQuiz;
+    totalSecondsToCompleteQuiz--;
+    if (totalSecondsToCompleteQuiz === 0) {
+      clearInterval(interval);
+      alert("You're out of time!");
+
+      endOfTheQuiz();
+    }
+  }, 1000);
+
   myCounter++;
+  displayQuestion(myCounter);
+}
+
+if (myCounter >= questions.length) {
+  // All done will append last page with user stats
+  endOfTheQuiz();
+} else {
+  displayQuestion(myCounter);
+}
+
+function displayQuestion(myCounter) {
   var quizH1Question = questions[myCounter].title;
   var userQuizChoices = questions[myCounter].choices;
   // emptying the text in the div element
@@ -89,58 +113,27 @@ function quizQuestion() {
   }
 }
 
-//starting the timer for the quiz
-var interval = setInterval(function () {
-  document.getElementById(
-    "timerDisplay"
-  ).innerHTML = totalSecondsToCompleteQuiz;
-  totalSecondsToCompleteQuiz--;
-  if (totalSecondsToCompleteQuiz === 0) {
-    clearInterval(interval);
-    alert("You're out of time!");
-
-    endOfTheQuiz();
-  }
-}, 1000);
-
-// // adding a click event to the choices button
+//adding a click event to the choices button
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "choicesButton") {
     containerOfQuizElements.innerHTML = "";
     var userClicked = e.target.innerText;
     console.log(userClicked);
+    compareChoicesWithAnswers(userClicked);
+
     //  checking how many questions are left in the quiz
     if (myCounter <= questions.length) {
-      compareChoicesWithAnswers(userClicked);
-      quizQuestion();
+      displayQuestion();
     } else {
       endOfTheQuiz();
     }
-
-    //do something
   }
 });
-
-// document.querySelectorAll("#choicesButton").forEach((item) => {
-//   console.log("item");
-//   item.addEventListener("click", (event) => {
-//     containerOfQuizElements.innerHTML = "";
-//     var userClicked = item.innerHTML;
-//     //  checking how many questions are left in the quiz
-//     if (myCounter <= questions.length) {
-//       quizQuestion();
-//       compareChoicesWithAnswers();
-//     } else {
-//       endOfTheQuiz();
-//     }
-//   });
-// });
 
 function compareChoicesWithAnswers(userClicked) {
   // var usersAnswerToQuizQuestion = userClicked;
   if (userClicked == questions[myCounter].answer) {
-    console.log("correct");
-    quizQuestion();
+    displayQuestion();
 
     // creating a Horizontal line and  div element to hold the right or wrong answer from the program
     var createHrElement = document.createElement("hr");
@@ -152,8 +145,7 @@ function compareChoicesWithAnswers(userClicked) {
 
     containerOfQuizElements.appendChild(createDivElementToCommunicateWithUser);
   } else {
-    console.log("incorrect");
-    quizQuestion();
+    displayQuestion();
 
     var createHrElement = document.createElement("hr");
     createHrElement.setAttribute("width", "300px");
@@ -176,7 +168,7 @@ function endOfTheQuiz() {
   creatingH1Element.setAttribute("id", "creatingH1Element");
   creatingH1Element.innerHTML = "All done!";
 
-  questionsQuizDivElement.appendChild(creatingH1Element);
+  containerQuizDivElement.appendChild(creatingH1Element);
 
   // Calculates time remaining and renders it to the screen as the score
   if (totalSecondsToCompleteQuiz >= 0) {
