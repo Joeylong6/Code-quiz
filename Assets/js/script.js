@@ -45,9 +45,9 @@ var questions = [
 
 // Declaring the variables
 var UserFinalScore = 0;
-var totalSecondsToCompleteQuiz = 75;
+var totalSecondsToCompleteQuiz = 30;
 var timePenalty = 15;
-var myCounter = -1;
+var myCounter = 0;
 var myCounterChoices = 0;
 
 // using getElementById to assign html elements to variables
@@ -78,18 +78,19 @@ function startTimer() {
     }
   }, 1000);
 
-  myCounter++;
-  displayQuestion(myCounter);
+  displayQuestion();
 }
 
-if (myCounter >= questions.length) {
-  // All done will append last page with user stats
-  endOfTheQuiz();
-} else {
-  displayQuestion(myCounter);
-}
+// if (myCounter >= questions.length) {
+//   // All done will append last page with user stats
+//   endOfTheQuiz();
+// } else {
+//   displayQuestion(myCounter);
+// }
 
-function displayQuestion(myCounter) {
+function displayQuestion() {
+  console.log(myCounter);
+  console.log();
   var quizH1Question = questions[myCounter].title;
   var userQuizChoices = questions[myCounter].choices;
   // emptying the text in the div element
@@ -111,24 +112,27 @@ function displayQuestion(myCounter) {
 
     containerOfQuizElements.appendChild(choicesButton);
   }
+
+  // //adding a click event to the choices button
+  document
+    .getElementById("choicesButton")
+    .addEventListener("click", function (e) {
+      alert("clicked on btn");
+      if (e.target && e.target.id == "choicesButton") {
+        containerOfQuizElements.innerHTML = "";
+        var userClicked = e.target.innerText;
+        console.log(userClicked);
+        compareChoicesWithAnswers(userClicked);
+        myCounter++;
+        //  checking how many questions are left in the quiz
+        if (myCounter <= questions.length) {
+          displayQuestion();
+        } else {
+          endOfTheQuiz();
+        }
+      }
+    });
 }
-
-//adding a click event to the choices button
-document.addEventListener("click", function (e) {
-  if (e.target && e.target.id == "choicesButton") {
-    containerOfQuizElements.innerHTML = "";
-    var userClicked = e.target.innerText;
-    console.log(userClicked);
-    compareChoicesWithAnswers(userClicked);
-
-    //  checking how many questions are left in the quiz
-    if (myCounter <= questions.length) {
-      displayQuestion();
-    } else {
-      endOfTheQuiz();
-    }
-  }
-});
 
 function compareChoicesWithAnswers(userClicked) {
   // var usersAnswerToQuizQuestion = userClicked;
@@ -168,7 +172,8 @@ function endOfTheQuiz() {
   creatingH1Element.setAttribute("id", "creatingH1Element");
   creatingH1Element.innerHTML = "All done!";
 
-  containerQuizDivElement.appendChild(creatingH1Element);
+  document.getElementById("containerOfQuizElements").append(creatingH1Element);
+  // containerQuizDivElement.append(creatingH1Element);
 
   // Calculates time remaining and renders it to the screen as the score
   if (totalSecondsToCompleteQuiz >= 0) {

@@ -52,8 +52,9 @@ a {
   border: 1px solid black;
   color: white;
   padding: 10px 24px;
+  margin: 10px;
   cursor: hand;
-  width: 40%;
+  width: 30%;
   display: block;
   text-align: left;
 }
